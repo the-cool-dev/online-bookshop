@@ -21,12 +21,11 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('mobile');
             $table->string('password');
-            $table->string('user_role');
-            
-            
-            
+            $table->integer('user_role');
             $table->timestamps();
         });
+
+
     }
 
     /**

@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\userController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +16,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    return "default page";
+});
+
+Route::get('/login', function () {
     return view('login');
 });
+
+Route::post('/login', [userController::class, 'login']); //mentioning which class and function called
+Route::get('/products', [ProductController::class, 'index']);
+
