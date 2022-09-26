@@ -51,7 +51,7 @@
               </div>
   
               <div class="d-flex justify-content-between mb-2">
-                <p class="text-muted mb-0"><span class="fw-bold">In Stock</span></p>
+                {{-- <p class="text-muted mb-0"><span class="fw-bold">In Stock</span></p> --}}
                 <div class="ms-auto text-warning">
                   <i class="fas fa-star"></i>
                   <i class="fas fa-star"></i>

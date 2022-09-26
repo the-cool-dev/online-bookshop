@@ -31,13 +31,23 @@ class ProductController extends Controller
     }
 
     function addToCart(Request $req){
-        
+        $userId = Session::get('user')['id'];
         if ($req -> session() -> has('user')) {
+            
             $cart = new Cart;
-            $cart->user_id = $req -> session() -> get('user')['id']; //inserting user id into table (user id column)
-            $cart->product_id = $req -> product_id; //inserting product id into table (product id column)
-            $cart->save();
-            return redirect('/products');
+            $existing_product = Cart::where('product_id', '=', $req -> input('product_id'))
+                                   -> where('user_id', '=', $userId) 
+                                   -> first();
+
+            if (!$existing_product) {
+                $cart->user_id = $req -> session() -> get('user')['id']; //inserting user id into table (user id column)
+                $cart->product_id = $req -> product_id; //inserting product id into table (product id column)
+                $cart->save();
+                return redirect('/products');
+            }else{
+                return redirect('/');
+            }
+            
         }else{
             return redirect('/login');
         }
@@ -59,12 +69,16 @@ class ProductController extends Controller
         -> select('products.*', 'cart.id as cart_id')
         -> get();
 
-        return view('cartlist', ['cart_products' => $products]);
+        //SELECT products.*, cart.id as cart_id from cart INNER JOIN products ON cart.product_id = products.id WHERE cart.user_id = 4;
+
+        return $products;
+
+        //return view('cartlist', ['cart_products' => $products]);
     }
 
     function moveToCart($id){
         Cart::destroy($id);
-        return redirect('/cartlist');
+        return redirect('/');
     }
 
     function checkOut(){
@@ -114,5 +128,7 @@ class ProductController extends Controller
         return view('orders', ['orders' => $orders]);
 
     }
+
+    
 }
 

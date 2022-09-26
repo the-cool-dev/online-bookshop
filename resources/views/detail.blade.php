@@ -1,5 +1,25 @@
 @extends('master')
 
+<?php 
+
+use App\Models\Cart;
+$exist_button_text = "Add to Cart";
+$exist = "";
+$userId = Session::get('user')['id'];
+
+$cart = new Cart;
+$existing_product = Cart::where('product_id', '=', $detail['id'])
+                       -> where('user_id', '=', $userId) 
+                       -> first();
+
+if ($existing_product){
+    $exist = "disabled";
+    $exist_button_text = "Added to Cart";
+}
+
+
+?>
+
 @section('content')
 
 <section>
@@ -31,7 +51,8 @@
                                     <form action="/add_to_cart" method="POST">
                                         @csrf
                                         <input type="hidden" name="product_id" value={{ $detail['id'] }}>
-                                    <button class="btn btn-danger text-uppercase mr-2 px-4">Add to cart</button> 
+                                       
+                                    <button {{ $exist }} class="btn btn-danger text-uppercase mr-2 px-4">{{$exist_button_text}}</button> 
                                 </form>
                                 </div>
                             </div>
