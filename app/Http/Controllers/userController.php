@@ -21,4 +21,18 @@ class userController extends Controller
             return redirect('/products');
         }
     }
+
+    function register(Request $req){
+        $user = new User;
+        $user -> first_name = $req -> first_name; 
+        $user -> last_name = $req -> last_name;
+        $user -> user_name = $req -> user_name;
+        $user -> email = $req -> email;
+        $user -> mobile = $req -> mobile;
+        $user -> password = $req -> password;
+        $user -> user_role = "admin";
+        $user -> save();
+
+        return redirect('/login');
+    }
 }

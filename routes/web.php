@@ -23,17 +23,27 @@ Route::get('/login', function () {
     return view('login');
 });
 
+Route::get('/register', function () {
+    return view('register');
+});
+
 Route::get('/logout', function () {
     session()->forget('user');
     return redirect('login');
 });
 
 Route::post('/login', [userController::class, 'login']); //mentioning which class and function called
+Route::post('/register', [userController::class, 'register']);
 Route::post('/add_to_cart', [ProductController::class, 'addToCart']);
 
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('detail/{id}', [ProductController::class, 'detail']);
 Route::post('/search', [ProductController::class, 'search']);
+Route::get('/cartlist', [ProductController::class, 'cartList']);
+Route::get('/movetocart/{id}', [ProductController::class, 'moveToCart']);
+Route::get('/checkout', [ProductController::class, 'checkOut']);
+Route::post('/placeorder', [ProductController::class, 'placeOrder']);
+// Route::get('/myorders', [ProductController::class, 'myOrders']);
 
 
 
