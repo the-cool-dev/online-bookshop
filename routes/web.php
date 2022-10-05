@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [ProductController::class, 'index']);
 
+// Route::auth();
+
 Route::get('/login', function () {
     return view('login');
 });

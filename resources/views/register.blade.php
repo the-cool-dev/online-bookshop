@@ -2,101 +2,148 @@
 
 @section('content')
 
-<section class="vh-100" style="background-color: #eee;">
-    <div class="container h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-lg-12 col-xl-11">
-          <div class="card text-black" style="border-radius: 25px;">
-            <div class="card-body p-md-5">
-              <div class="row justify-content-center">
-                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-  
-                  <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
-  
-                  <form class="mx-1 mx-md-4" method="POST" action="register">
-                    @csrf
-                    <div class="d-flex flex-row align-items-center mb-4">
-                      <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                      <div class="form-outline flex-fill mb-0">
-                        <input type="text" id="form3Example1c" name="first_name" class="form-control" />
-                        <label class="form-label" for="form3Example1c">First Name</label>
-                      </div>
-                    </div>
+<section class="pt-7 pb-12">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
 
-                    <div class="d-flex flex-row align-items-center mb-4">
-                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                        <div class="form-outline flex-fill mb-0">
-                          <input type="text" id="form3Example1c" name="last_name" class="form-control" />
-                          <label class="form-label" for="form3Example1c">Last Name</label>
-                        </div>
-                      </div>
+        <!-- Heading -->
+        <h3 class="mb-10">Sign Up</h3>
 
-                      <div class="d-flex flex-row align-items-center mb-4">
-                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                        <div class="form-outline flex-fill mb-0">
-                          <input type="text" id="form3Example1c" name="user_name" class="form-control" />
-                          <label class="form-label" for="form3Example1c">User Name</label>
-                        </div>
-                      </div>
-  
-                    <div class="d-flex flex-row align-items-center mb-4">
-                      <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                      <div class="form-outline flex-fill mb-0">
-                        <input type="email" id="form3Example3c" name="email" class="form-control" />
-                        <label class="form-label" for="form3Example3c">Your Email</label>
-                      </div>
-                    </div>
-
-                    <div class="d-flex flex-row align-items-center mb-4">
-                        <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                        <div class="form-outline flex-fill mb-0">
-                          <input type="text" id="form3Example3c" name="mobile" class="form-control" />
-                          <label class="form-label" for="form3Example3c">Your Mobile</label>
-                        </div>
-                      </div>
-  
-                    <div class="d-flex flex-row align-items-center mb-4">
-                      <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                      <div class="form-outline flex-fill mb-0">
-                        <input type="password" id="form3Example4c" name="password" class="form-control" />
-                        <label class="form-label" for="form3Example4c">Password</label>
-                      </div>
-                    </div>
-  
-                    <div class="d-flex flex-row align-items-center mb-4">
-                      <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                      <div class="form-outline flex-fill mb-0">
-                        <input type="password" id="form3Example4cd" name="confirm_password" class="form-control" />
-                        <label class="form-label" for="form3Example4cd">Repeat your password</label>
-                      </div>
-                    </div>
-  
-                    {{-- <div class="form-check d-flex justify-content-center mb-5">
-                      <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
-                      <label class="form-check-label" for="form2Example3">
-                        I agree all statements in <a href="#!">Terms of service</a>
-                      </label>
-                    </div> --}}
-  
-                    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                      <button type="submit" class="btn btn-primary btn-lg">Register</button>
-                    </div>
-  
-                  </form>
-  
-                </div>
-                <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-  
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
-                    class="img-fluid" alt="Sample image">
-  
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
-  </section>
+    <div class="row">
+      <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
+
+        <!-- Form -->
+        <form method="POST" action="register">
+          @csrf
+          
+          <div class="row">
+            <div class="col-12 col-md-6">
+
+              <!-- Email -->
+              <div class="form-group">
+                <label class="form-label" for="accountFirstName">
+                  First Name *
+                </label>
+                <input class="form-control form-control-sm" name="first_name" id="accountFirstName" type="text" placeholder="First Name *" value="{{ old('first_name') }}" >
+                @error('first_name')
+                <span class="text-danger" role="alert">
+                  {{ $errors->first('first_name') }}
+                </span> 
+                @enderror
+              </div>
+
+            </div>
+            <div class="col-12 col-md-6">
+
+              <!-- Email -->
+              <div class="form-group">
+                <label class="form-label" for="accountLastName">
+                  Last Name *
+                </label>
+                <input class="form-control form-control-sm" name="last_name" id="accountLastName" type="text" placeholder="Last Name *" value="{{ old('last_name') }}" >
+                @error('last_name')
+                <span class="text-danger" role="alert">
+                  {{ $errors->first('last_name') }}
+                </span> 
+                @enderror
+              </div>
+
+            </div>
+            <div class="col-12 col-md-6">
+
+              <!-- Email -->
+              <div class="form-group">
+                <label class="form-label" for="accountEmail">
+                  User Name *
+                </label>
+                <input class="form-control form-control-sm" name="user_name" id="accountEmail" type="text" placeholder="Email Address *" value="{{ old('user_name') }}" >
+                @error('user_name')
+                <span class="text-danger" role="alert">
+                  {{ $errors->first('user_name') }}
+                </span> 
+                @enderror
+              </div>
+
+            </div>
+            <div class="col-12 col-md-6">
+
+              <!-- Email -->
+              <div class="form-group">
+                <label class="form-label" for="accountEmail">
+                  Email Address *
+                </label>
+                <input class="form-control form-control-sm" name="email" id="accountEmail" type="email" placeholder="Email Address *" value="{{ old('email') }}" >
+                @error('email')
+                <span class="text-danger" role="alert">
+                  {{ $errors->first('email') }}
+                </span> 
+                @enderror
+              </div>
+
+            </div>
+            <div class="col-12 col-md-6">
+
+              <!-- Password -->
+              <div class="form-group">
+                <label class="form-label" for="accountPassword">
+                  Password *
+                </label>
+                <input class="form-control form-control-sm" id="accountPassword" type="password" placeholder="Password *" name="password" >
+                @error('password')
+                <span class="text-danger" role="alert">
+                  {{ $errors->first('password') }}
+                </span> 
+                @enderror
+              </div>
+
+            </div>
+            <div class="col-12 col-md-6">
+
+              <!-- Password -->
+              <div class="form-group">
+                <label class="form-label" for="AccountNewPassword">
+                  Confirm Password *
+                </label>
+                <input class="form-control form-control-sm" id="AccountNewPassword" type="password" placeholder="Confirm Password *" name="password_confirmation" >
+                @error('password_confirmation')
+                <span class="text-danger" role="alert">
+                  {{ $errors->first('password_confirmation') }}
+                </span> 
+                @enderror
+              </div>
+
+            </div>
+
+            <div class="col-12">
+
+              <!-- Button -->
+              <button class="btn btn-dark" type="submit">Sign Up</button>
+
+            </div>
+          </div>
+        </form>
+{{-- 
+        @if ($errors->any())
+            <div>
+              @foreach ($errors->all() as $err)
+                  <li>
+                    {{$err}}
+                  </li>
+              @endforeach
+            </div>
+        @else
+            <div>
+              No errors
+            </div>
+        @endif --}}
+
+      </div>
+    </div>
+  </div>
+</section>
+
 
   @endsection
