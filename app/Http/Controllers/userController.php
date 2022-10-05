@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
+//use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Support\Facades\Redirect;
 use Symfony\Component\Console\Input\Input;
+
 
 class userController extends Controller
 {
@@ -102,4 +104,33 @@ class userController extends Controller
 
         return redirect('/login');
     }
+
+    // function forgotPassword(Request $req){
+    //     $validator = Validator::make($req -> all(), [
+    //         'email' => ['required'],
+    //     ],
+    //     [
+
+    //         'email.required' => 'Email address cannot be empty',
+            
+            
+    //     ]
+    // );
+
+    //     if ($validator->fails()) {
+    //         return redirect('/')
+    //                     ->withErrors($validator)->withInput();
+                        
+    //     }
+
+    //     $status = Password::sendResetLink(
+    //         $req->only('email')
+    //     );
+
+    //     return $status === Password::RESET_LINK_SENT
+    //             ? back()->with(['status' => __($status)])
+    //             : back()->withErrors(['email' => __($status)]);
+    // }
 }
+
+

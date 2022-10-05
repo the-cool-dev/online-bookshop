@@ -46,13 +46,16 @@
                     </div>
                 
                     <div class="row mb-3">
-                      <div class="col-sm-10 offset-sm-2">
+                      <div class="col-sm-6 ms-auto">
                         <div class="form-check">
                           <input class="form-check-input" type="checkbox" id="gridCheck1">
                           <label class="form-check-label" for="gridCheck1">
                             Remember me
                           </label>
                         </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <a href="/forgot_password">Forgot Password?</a>
                       </div>
                     </div>
                     <button type="submit" class="btn btn-primary text-center mx-auto">Login</button>
