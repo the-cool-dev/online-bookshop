@@ -22,21 +22,41 @@ use Illuminate\Support\Str;
 |
 */
 
-Route::get('/', [ProductController::class, 'index']);
-
 // Route::auth();
 
-Route::get('/login', function () {
-    return view('login');
-});
+// Route::get('/login', function () {
+//     return view('login');
+// });
 
-Route::get('/cartlist', function () {
-    return view('cartlist');
-});
+Route::view('/', 'home');
+Route::view('/login', 'login');
+Route::view('/cartlist', 'cartlist');
+Route::view('/register', 'register');
+Route::view('/login', 'login');
 
-Route::get('/register', function () {
-    return view('register');
-}); 
+Route::post('/login', [userController::class, 'login']); //mentioning which class and function called
+Route::post('/register', [userController::class, 'register']);
+Route::post('/add_to_cart', [ProductController::class, 'addToCart']);
+
+Route::get('/products', [ProductController::class, 'index']);
+
+//To get detailed view of single product
+Route::get('/detail/{id}', [ProductController::class, 'detail']) -> name('product_detail');
+
+//To get a list of products
+Route::get('product_list/{id}', [ProductController::class, 'productList']) -> name('product_list');
+
+//To get a list of products by search keyword
+Route::post('/search', [ProductController::class, 'search']);
+
+//To move a product to cart
+Route::get('/movetocart/{id}', [ProductController::class, 'moveToCart']);
+
+//To display all products in carts in the checkout page
+Route::get('/checkout', [ProductController::class, 'checkOut']);
+
+//To move all the products from cart to order table
+Route::post('/placeorder', [ProductController::class, 'placeOrder']);
 
 Route::get('/forgot_password', function () {
     return view('forgot_password');
@@ -50,14 +70,6 @@ Route::get('/logout', function () {
     session()->forget('user');
     return redirect('login');
 });
-
-Route::post('/login', [userController::class, 'login']); //mentioning which class and function called
-Route::post('/register', [userController::class, 'register']);
-Route::post('/add_to_cart', [ProductController::class, 'addToCart']);
-
-Route::get('/products', [ProductController::class, 'index']);
-Route::get('detail/{id}', [ProductController::class, 'detail']);
-Route::post('/search', [ProductController::class, 'search']);
 
 //Reset Password Route with validation
 Route::post('/forgot_password', function (Request $request) {
@@ -99,11 +111,6 @@ Route::post('/confirm_password', function (Request $request) {
                 : back()->withErrors(['email' => [__($status)]]);
 })->middleware('guest')->name('password.update');
 
-
-//Route::get('/cartlist', [ProductController::class, 'cartList']);
-Route::get('/movetocart/{id}', [ProductController::class, 'moveToCart']);
-Route::get('/checkout', [ProductController::class, 'checkOut']);
-Route::post('/placeorder', [ProductController::class, 'placeOrder']);
 
 
 

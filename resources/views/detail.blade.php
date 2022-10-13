@@ -1,5 +1,3 @@
-@extends('master')
-
 <?php 
 
 use App\Models\Cart;
@@ -10,6 +8,7 @@ $userId = Session::get('user')['id'];
 $cart = new Cart;
 $existing_product = Cart::where('product_id', '=', $detail['id'])
                        -> where('user_id', '=', $userId) 
+                       -> where('status', '=', 1)
                        -> first();
 
 if ($existing_product){
@@ -20,13 +19,18 @@ if ($existing_product){
 
 ?>
 
+@extends('master')
+
 @section('content')
+
+<link rel="stylesheet" href="{{ asset('css/libs.bundle.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ asset('css/theme.bundle.css') }}" type="text/css">
 
 <section>
     <div class="container mt-5 mb-5">
         <div class="row d-flex justify-content-center">
             <div class="col-md-10">
-                <div class="card">
+                <div class="card card-cart">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="images p-3">

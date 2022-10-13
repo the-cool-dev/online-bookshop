@@ -17,7 +17,7 @@ class ProductController extends Controller
     function index(){
         $data = Product::all();
         $slider = Slider::all();
-        return view('product', ['sliders' => $slider], ['datas' => $data]);
+        return view('product', ['datas' => $data]);
     }
 
     function detail($id){
@@ -37,11 +37,13 @@ class ProductController extends Controller
             $cart = new Cart;
             $existing_product = Cart::where('product_id', '=', $req -> input('product_id'))
                                    -> where('user_id', '=', $userId) 
+                                   -> where('status', '=', 1)
                                    -> first();
 
             if (!$existing_product) {
                 $cart->user_id = $req -> session() -> get('user')['id']; //inserting user id into table (user id column)
                 $cart->product_id = $req -> product_id; //inserting product id into table (product id column)
+                $cart->status = 1;
                 $cart->save();
                 return redirect('/products');
             }else{
@@ -58,7 +60,7 @@ class ProductController extends Controller
 
     function cartItem(){
         $userId = Session::get('user')['id'];
-        return Cart::where('user_id', $userId) -> count();
+        return Cart::where('user_id', $userId) -> where('status', 1) -> count();
     }
 
     function cartList(){
@@ -66,6 +68,7 @@ class ProductController extends Controller
         $products = DB::table('cart') 
         -> join('products', 'cart.product_id', '=', 'products.id')
         -> where('cart.user_id', $userId)
+        -> where('cart.status', 1)
         -> select('products.*', 'cart.id as cart_id')
         -> get();
 
@@ -82,13 +85,21 @@ class ProductController extends Controller
     }
 
     function checkOut(){
+
         $userId = Session::get('user')['id'];
+
         $total = DB::table('cart') 
         -> join('products', 'cart.product_id', '=', 'products.id')
         -> where('cart.user_id', $userId)
         -> sum('products.price');
 
-        return view('checkout', ['total' => $total]);
+        $cart_products = DB::table('cart') 
+        -> join('products', 'cart.product_id', '=', 'products.id')
+        -> where('cart.user_id', $userId)
+        -> select('products.*', 'cart.id as cart_id')
+        -> get();
+
+        return view('checkout', ['total' => $total], ['products' => $cart_products]);
 
     }
 
@@ -100,9 +111,12 @@ class ProductController extends Controller
 
             $order->product_id = $cart['product_id'];
             $order->user_id = $cart['user_id'];
-            $order->status = "pending";
-            $order->payment_method = $req -> payment;
-            $order->payment_status = "pending";
+            
+            
+            $order->payment_status = 0;
+            $order->status = 0;  
+
+            $order->payment_method = "UPI";
             $order->address = $req -> address;
             $order->country = $req -> country;
             $order->state = $req -> state;
@@ -112,7 +126,7 @@ class ProductController extends Controller
             $order->email = $req -> email;
             $order->mobile = $req -> mobile;
             $order->save();
-            Cart::where('user_id', $userId) -> delete();
+            Cart::where('user_id', $userId) -> update(['status' => 0]);
             
         }
         return redirect('/');
@@ -127,6 +141,11 @@ class ProductController extends Controller
 
         return view('orders', ['orders' => $orders]);
 
+    }
+
+    function productList($id){
+        $products = Product::where('category_id', $id)->get();
+        return view('product_list', ['products' => $products]);
     }
 
     

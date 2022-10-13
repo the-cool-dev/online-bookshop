@@ -124,6 +124,11 @@
 
             </div>
           </div>
+          <div class="row my-3">
+            <div class="col-sm-6">
+              Registered Already? <a href="/login">Sign in here</a>
+            </div>
+          </div>
         </form>
 {{-- 
         @if ($errors->any())

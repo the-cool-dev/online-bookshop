@@ -13,8 +13,10 @@
           </div>
           @enderror
       </div>
+      
         <div class="row">
             <div class="col-md-6 mx-auto">
+              <div class="bg-grey p-7">
                 <form action="/login" method="POST">
                     @csrf
   
@@ -48,7 +50,7 @@
                     <div class="row mb-3">
                       <div class="col-sm-6 ms-auto">
                         <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="gridCheck1">
+                          <input class="form-check-input" name="remember" type="checkbox" id="gridCheck1">
                           <label class="form-check-label" for="gridCheck1">
                             Remember me
                           </label>
@@ -59,9 +61,15 @@
                       </div>
                     </div>
                     <button type="submit" class="btn btn-primary text-center mx-auto">Login</button>
+                    <div class="row my-3">
+                      <div class="col-sm-6">
+                        New User? <a href="/register">Sign up Now</a>
+                      </div>
+                    </div>
                   </form>
                 
             </div>
+          </div>
         </div>
     </div>
 </section>

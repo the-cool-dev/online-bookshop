@@ -10,40 +10,23 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Support\Facades\Redirect;
 use Symfony\Component\Console\Input\Input;
+use Illuminate\Support\Facades\Auth;
 
 
 class userController extends Controller
 {
     //
     function login(Request $req){
+        $credentials = $req->only('email', 'password');
         $user = User::where(['email' => $req -> email]) -> first();
-
-        $validator = Validator::make($req -> all(), [
-            'email' => ['required'],
-            'password' => ['required'],
-        ],
-        [
-
-            'email.required' => 'Email address cannot be empty',
-            'password.required' => 'Password cannot be empty',
-            
-            
-        ]
-    );
-
-        if ($validator->fails()) {
-            return redirect('/login')
-                        ->withErrors($validator)->withInput();
-                        
-        }
-
-
-
-        if ( !$user || !(Hash::check($req -> password, $user -> password))) {
-            return Redirect::back()->withErrors(['invalid' => 'Username or Password is Invalid']);
-        }else{
+        $remember = $req->remember;
+ 
+        if (Auth::attempt($credentials, $remember)) {
+            // Authentication passed...
             $req -> session() -> put('user', $user);
-            return redirect('/products');
+            return redirect('/');
+        }else{
+            return Redirect::back()->withErrors(['invalid' => 'Username or Password is Invalid']);
         }
     }
 
@@ -105,32 +88,6 @@ class userController extends Controller
         return redirect('/login');
     }
 
-    // function forgotPassword(Request $req){
-    //     $validator = Validator::make($req -> all(), [
-    //         'email' => ['required'],
-    //     ],
-    //     [
-
-    //         'email.required' => 'Email address cannot be empty',
-            
-            
-    //     ]
-    // );
-
-    //     if ($validator->fails()) {
-    //         return redirect('/')
-    //                     ->withErrors($validator)->withInput();
-                        
-    //     }
-
-    //     $status = Password::sendResetLink(
-    //         $req->only('email')
-    //     );
-
-    //     return $status === Password::RESET_LINK_SENT
-    //             ? back()->with(['status' => __($status)])
-    //             : back()->withErrors(['email' => __($status)]);
-    // }
 }
 
 
