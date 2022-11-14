@@ -3,7 +3,15 @@
 @section('content')
 
 <section>
+  <img src="{{asset('images/banners/about-banner.png')}}" class="w-100" alt="">
+</section>
+
+<section>
     <div class="container">
+      @if (count($products) <= 0)
+              <h3 class="text-center mt-6">Sorry No Books to Display</h3>
+            
+            @else
         <div class="row">
 
             @foreach ($products as $item)
@@ -49,6 +57,7 @@
               @endforeach
               
         </div>
+        @endif
     </div>
 </section>
     

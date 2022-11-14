@@ -2,7 +2,7 @@
 
 @section('content')
 
-<section class="m-auto custom-login">
+<section class="m-auto">
     <div class="container">
       <div class="row">
         @error('invalid')
@@ -16,7 +16,7 @@
       
         <div class="row">
             <div class="col-md-6 mx-auto">
-              <div class="bg-grey p-7">
+              <div class="p-7">
                 <form action="/login" method="POST">
                     @csrf
   

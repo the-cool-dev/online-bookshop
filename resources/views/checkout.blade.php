@@ -1,6 +1,24 @@
+<?php 
+
+use App\Http\Controllers\ProductController;
+
+$total_items = 0;
+
+if (Session::has('user')) {
+  $total_items = ProductController::cartItem();
+}
+
+
+?>
+
+
 @extends('master')
 
 @section('content')
+
+<section>
+  <img src="{{asset('images/banners/about-banner.png')}}" class="w-100" alt="">
+</section>
 
 <section class="pt-7 pb-12">
     
@@ -22,7 +40,7 @@
 
             <!-- Heading -->
             <h6 class="mb-7">Billing Details</h6>
-            <form method="POST" action="/placeorder">
+            <form method="POST" action="/placeorder" class="mb-10">
                 @csrf
             <!-- Billing details -->
             <div class="row mb-9">
@@ -98,6 +116,7 @@
                 </div>
 
               </div>
+              <input type="hidden" name="total" value="{{ $total + 8.00 }}">
             </div>
             <button class="btn btn-danger text-uppercase mr-2 px-4">Place Order</button>
         </form>
@@ -218,7 +237,7 @@
         <div class="col-12 col-md-5 col-lg-4 offset-lg-1">
 
           <!-- Heading -->
-          <h6 class="mb-7">Order Items (3)</h6>
+          <h6 class="mb-7 font-chart">Order Items ({{$total_items}})</h6>
 
           <!-- Divider -->
           <hr class="my-7">
@@ -233,7 +252,7 @@
                 <div class="col-4">
 
                   <!-- Image -->
-                  <a href="product.html">
+                  <a href="#!">
                     <img src="{{ $product -> image }}" alt="..." class="img-fluid">
                   </a>
 
@@ -241,9 +260,9 @@
                 <div class="col">
 
                   <!-- Title -->
-                  <p class="mb-4 fs-sm fw-bold">
-                    <a class="text-body" href="product.html">{{ $product -> name }}</a> <br>
-                    <span class="text-muted">&#8377; {{ $product -> price }}</span>
+                  <p class="mb-4 f-s-22 fw-bold">
+                    <a class="text-body" href="#!">{{ $product -> name }}</a> <br>
+                    <span class="color-primary mt-2">&#8377; {{ $product -> price }}</span>
                   </p>
 
                 </div>
@@ -253,19 +272,16 @@
           </ul>
 
           <!-- Card -->
-          <div class="card mb-9 bg-light">
+          <div class="mb-9">
             <div class="card-body">
               <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x">
-                <li class="list-group-item d-flex">
-                  <span>Subtotal</span> <span class="ms-auto fs-sm">&#8377; {{ $total }}</span>
+                <li class="list-group-item d-flex font-chart">
+                  <span>Subtotal</span> <span class="ms-auto f-s-22">&#8377; {{ $total }}</span>
                 </li>
-                <li class="list-group-item d-flex">
-                  <span>Tax</span> <span class="ms-auto fs-sm">&#8377; 00.00</span>
+                <li class="list-group-item d-flex font-chart">
+                  <span>Tax</span> <span class="ms-auto f-s-22 font-chart">&#8377; 8.00</span>
                 </li>
-                <li class="list-group-item d-flex">
-                  <span>Shipping</span> <span class="ms-auto fs-sm">&#8377; 8.00</span>
-                </li>
-                <li class="list-group-item d-flex fs-lg fw-bold">
+                <li class="list-group-item d-flex fs-lg fw-bold font-chart f-s-22">
                   <span>Total</span> <span class="ms-auto">&#8377; {{ $total + 8.00 }}</span>
                 </li>
               </ul>

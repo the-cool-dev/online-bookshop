@@ -10,6 +10,7 @@ $total = 0;
 
 if (Session::has('user')) {
   $total = ProductController::cartItem();
+  $total_amount = ProductController::checkOut();
 }
 
 
@@ -37,8 +38,7 @@ if (Session::has('user')) {
     {{-- font awesome --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    {{-- flickity js --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flickity/3.0.0/flickity.pkgd.min.js" integrity="sha512-achKCfKcYJg0u0J7UDJZbtrffUwtTLQMFSn28bDJ1Xl9DWkl/6VDT3LMfVTo09V51hmnjrrOTbtg4rEgg0QArA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
 
     {{-- bootstrap js --}}
     {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script> --}}
@@ -48,9 +48,99 @@ if (Session::has('user')) {
 
     
     <title>Online Book Shop</title>
-</head>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <style>
+      .logo-class{
+        width: 6.5rem;
+        height: 6.5rem;
+      }
+
+      .navbar{
+        /* background: linear-gradient(90deg, rgb(249 130 5) 0%, rgba(255,193,0,1) 48%, rgb(247 149 9) 100%); */
+        padding-top: 0.2rem;
+        padding-bottom: 0.3rem;
+      }
+
+  body{
+  overflow-x: hidden;
+  }
+  
+  html{
+  overflow-x: hidden;
+  }
+  
+    .custom-login{
+        height: 500px;
+        padding-top: 100px;
+    }
+  
+    .carousel-cell {
+  width: 28%;
+  height: 200px;
+  margin-right: 10px;
+  
+  border-radius: 5px;
+  counter-increment: carousel-cell;
+  }
+  
+  /* .carousel-cell.is-selected {
+  background: #ED2;
+  } */
+  
+  /* cell number */
+  .carousel-cell:before {
+  display: block;
+  text-align: center;
+  content: counter(carousel-cell);
+  line-height: 200px;
+  font-size: 80px;
+  color: white;
+  }
+  
+  .bg-grey{
+    background-color: #fff;
+  }
+  
+  /* .card{
+    box-shadow: 0px 0px 4px 2px #00000026;
+    border-radius: 20px;
+    padding: 10px;
+    height: 600px;
+  } */
+  
+  .card-cart{
+  height: auto;
+  }
+  
+  .product-card{
+    /* box-shadow: 0px 0px 4px 2px #00000026; */
+      border-radius: 20px;
+      padding: 10px;
+      height: 600px;
+      /* background-color: #ffffff1a; */
+  }
+  
+  .product-cart{
+    border: none;
+    background: none;
+    color: #000;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 30px;
+  }
+  
+  .flex-2{
+  flex: 2;
+  padding-left: 3.05rem;
+  }
+  .flex-6{
+  flex: 6;
+  }
+  </style>
+
+</head>
+<body class="wood-bg">
+<nav class="navbar navbar-expand-lg navbar-light bg-white wood-bg">
       <div class="container">
     
         <!-- Brand -->
@@ -82,7 +172,7 @@ if (Session::has('user')) {
               <!-- Menu -->
               <div class="dropdown-menu">
                 <div class="card card-lg">
-                  <div class="card-body">
+                  <div class="card-body wood-bg">
                     <ul class="list-styled fs-sm">
                       @foreach ($categories as $item)
                       
@@ -99,7 +189,7 @@ if (Session::has('user')) {
     
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="docs/getting-started.html">Contact Us</a>
+              <a class="nav-link" href="#!">Contact Us</a>
             </li>
             <li class="nav-item dropdown">
     
@@ -109,7 +199,7 @@ if (Session::has('user')) {
               <!-- Menu -->
               <div class="dropdown-menu">
                 <div class="card card-lg">
-                  <div class="card-body">
+                  <div class="card-body wood-bg">
                     <ul class="list-styled fs-sm">
                       
                   
@@ -142,12 +232,12 @@ if (Session::has('user')) {
                 <i class="fe f-s-22 fe-search"></i>
               </a>
             </li>
-            <li class="nav-item ms-lg-n4">
+            <li class="nav-item ms-lg-n4 d-none">
               <a class="nav-link" data-bs-toggle="offcanvas" href="#modalUserProfile">
                 <i class="fe f-s-22 fe-user"></i>
               </a>
             </li>
-            <li class="nav-item ms-lg-n4">
+            <li class="nav-item ms-lg-n4 d-none">
               <a class="nav-link" data-bs-toggle="offcanvas" href="#modalNotifications">
                 <i class="fe f-s-22 fe-bell"></i>
               </a>
@@ -167,11 +257,11 @@ if (Session::has('user')) {
     </nav>
 
 
-    <div class="offcanvas offcanvas-end" id="modalSearch" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="wood-bg wood-bg offcanvas offcanvas-end" id="modalSearch" tabindex="-1" role="dialog" aria-hidden="true">
     
       <!-- Close -->
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close">
-        <i class="fe f-s-22 fe-x" aria-hidden="true"></i>
+        
       </button>
     
       <!-- Header-->
@@ -212,13 +302,13 @@ if (Session::has('user')) {
     
     </div>
 
-    <div class="offcanvas offcanvas-end" id="modalShoppingCart" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="wood-bg offcanvas offcanvas-end" id="modalShoppingCart" tabindex="-1" role="dialog" aria-hidden="true">
     
       <!-- Full cart (add `.d-none` to disable it) -->
     
       <!-- Close -->
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close">
-        <i class="fe f-s-22 fe-x" aria-hidden="true"></i>
+        
       </button>
     
       <!-- Header-->
@@ -237,7 +327,7 @@ if (Session::has('user')) {
             <div class="col-4">
     
               <!-- Image -->
-              <a href="product.html">
+              <a href="{{route('product_detail', ['id' => $item->id])}}">
                 <img class="img-fluid" src="{{ $item -> image }}" alt="...">
               </a>
     
@@ -245,9 +335,9 @@ if (Session::has('user')) {
             <div class="col-8">
     
               <!-- Title -->
-              <p class="fs-sm fw-bold mb-6">
+              <p class="f-s-22 fw-bold mb-6 font-chart">
                 <a class="text-body" href="product.html">{{ $item -> name }}</a> <br>
-                <span class="text-muted">&#8377; {{ $item -> price }}</span>
+                <span class="color-primary">&#8377; {{ $item -> price }}</span>
               </p>
     
               <!--Footer -->
@@ -269,13 +359,13 @@ if (Session::has('user')) {
       </ul>
     
       <!-- Footer -->
-      <div class="offcanvas-footer justify-between lh-fixed fs-sm bg-light mt-auto">
-        <strong>Subtotal</strong> <strong class="ms-auto">$89.00</strong>
+      <div class="text-white offcanvas-footer justify-between lh-fixed bg-primaryy mt-auto f-s-22">
+        <strong>Subtotal</strong> <strong class="ms-auto font-chart">&#8377; {{$total_amount['total']}}</strong>
       </div>
     
       <!-- Buttons -->
       <div class="offcanvas-body">
-        <a class="btn w-100 btn-dark" href="/checkout">Continue to Checkout</a>
+        <a class="btn w-100 btn-primary" href="/checkout">Continue to Checkout</a>
         <a class="btn w-100 btn-outline-dark mt-2" href="/cartlist">View Cart</a>
       </div>
 
@@ -287,7 +377,7 @@ if (Session::has('user')) {
     
           <!-- Close -->
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close">
-            <i class="fe f-s-22 fe-x" aria-hidden="true"></i>
+            
           </button>
       
           <!-- Body -->
@@ -297,7 +387,7 @@ if (Session::has('user')) {
             <h6 class="mb-7 text-center">Your cart is empty 😞</h6>
       
             <!-- Button -->
-            <a class="btn w-100 btn-outline-dark" href="/">
+            <a class="btn w-100 btn-outline-dark" href="/products">
               Continue Shopping
             </a>
       
@@ -313,13 +403,13 @@ if (Session::has('user')) {
     </div>
 
 
-    <div class="offcanvas offcanvas-end" id="modalUserProfile" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="wood-bg offcanvas offcanvas-end" id="modalUserProfile" tabindex="-1" role="dialog" aria-hidden="true">
     
       <!-- Full cart (add `.d-none` to disable it) -->
     
       <!-- Close -->
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close">
-        <i class="fe f-s-22 fe-x" aria-hidden="true"></i>
+        
       </button>
     
       <!-- Header-->
@@ -370,107 +460,7 @@ if (Session::has('user')) {
       </ul>
     
       <!-- Footer -->
-      <div class="offcanvas-footer justify-between lh-fixed fs-sm bg-light mt-auto">
-        <strong>Subtotal</strong> <strong class="ms-auto">$89.00</strong>
-      </div>
-    
-      <!-- Buttons -->
-      <div class="offcanvas-body">
-        <a class="btn w-100 btn-dark" href="checkout.html">Continue to Checkout</a>
-        <a class="btn w-100 btn-outline-dark mt-2" href="/cartlist">View Cart</a>
-      </div>
-
-          
-      @else
-
-      <div>
-        <div class="d-block">
-    
-          <!-- Close -->
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close">
-            <i class="fe f-s-22 fe-x" aria-hidden="true"></i>
-          </button>
-      
-          <!-- Body -->
-          <div class="offcanvas-body flex-grow-0 my-auto">
-      
-            <!-- Heading -->
-            <h6 class="mb-7 text-center">Your cart is empty 😞</h6>
-      
-            <!-- Button -->
-            <a class="btn w-100 btn-outline-dark" href="/">
-              Continue Shopping
-            </a>
-      
-          </div>
-      
-        </div>
-      
-      </div>
-          
-      @endif
-      <!-- Empty cart (remove `.d-none` to enable it) -->
-     
-    </div>
-
-    <div class="offcanvas offcanvas-end" id="modalNotifications" tabindex="-1" role="dialog" aria-hidden="true">
-    
-      <!-- Full cart (add `.d-none` to disable it) -->
-    
-      <!-- Close -->
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close">
-        <i class="fe f-s-22 fe-x" aria-hidden="true"></i>
-      </button>
-    
-      <!-- Header-->
-      <div class="offcanvas-header lh-fixed fs-lg">
-        <strong class="mx-auto">Your Cart ({{$total}})</strong>
-      </div>
-    
-      @if ($total > 0)
-
-      <!-- List group -->
-      <ul class="list-group list-group-lg list-group-flush">
-        @foreach ($cart_items as $item)
-
-        <li class="list-group-item">
-          <div class="row align-items-center">
-            <div class="col-4">
-    
-              <!-- Image -->
-              <a href="product.html">
-                <img class="img-fluid" src="{{ $item -> image }}" alt="...">
-              </a>
-    
-            </div>
-            <div class="col-8">
-    
-              <!-- Title -->
-              <p class="fs-sm fw-bold mb-6">
-                <a class="text-body" href="product.html">{{ $item -> name }}</a> <br>
-                <span class="text-muted">&#8377; {{ $item -> price }}</span>
-              </p>
-    
-              <!--Footer -->
-              <div class="d-flex align-items-center">
-  
-    
-                <!-- Remove -->
-                <a class="fs-s text-gray-400\" href="/movetocart/{{ $item -> cart_id }}">
-                  <i class="fe f-s-22 fe-trash"></i> Remove
-                </a>
-    
-              </div>
-    
-            </div>
-          </div>
-        </li>
-        @endforeach
-
-      </ul>
-    
-      <!-- Footer -->
-      <div class="offcanvas-footer justify-between lh-fixed fs-sm bg-light mt-auto">
+      <div class="offcanvas-footer justify-between lh-fixed fs-sm bg-primaryy mt-auto">
         <strong>Subtotal</strong> <strong class="ms-auto">$89.00</strong>
       </div>
     
@@ -488,7 +478,7 @@ if (Session::has('user')) {
     
           <!-- Close -->
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close">
-            <i class="fe f-s-22 fe-x" aria-hidden="true"></i>
+            
           </button>
       
           <!-- Body -->
@@ -498,7 +488,107 @@ if (Session::has('user')) {
             <h6 class="mb-7 text-center">Your cart is empty 😞</h6>
       
             <!-- Button -->
-            <a class="btn w-100 btn-outline-dark" href="/">
+            <a class="btn w-100 btn-outline-dark" href="/products">
+              Continue Shopping
+            </a>
+      
+          </div>
+      
+        </div>
+      
+      </div>
+          
+      @endif
+      <!-- Empty cart (remove `.d-none` to enable it) -->
+     
+    </div>
+
+    <div class="wood-bg offcanvas offcanvas-end" id="modalNotifications" tabindex="-1" role="dialog" aria-hidden="true">
+    
+      <!-- Full cart (add `.d-none` to disable it) -->
+    
+      <!-- Close -->
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close">
+        
+      </button>
+    
+      <!-- Header-->
+      <div class="offcanvas-header lh-fixed fs-lg">
+        <strong class="mx-auto">Your Cart ({{$total}})</strong>
+      </div>
+    
+      @if ($total > 0)
+
+      <!-- List group -->
+      <ul class="list-group list-group-lg list-group-flush">
+        @foreach ($cart_items as $item)
+
+        <li class="list-group-item">
+          <div class="row align-items-center">
+            <div class="col-4">
+    
+              <!-- Image -->
+              <a href="product.html">
+                <img class="img-fluid" src="{{ $item -> image }}" alt="...">
+              </a>
+    
+            </div>
+            <div class="col-8">
+    
+              <!-- Title -->
+              <p class="fs-sm fw-bold mb-6">
+                <a class="text-body" href="product.html">{{ $item -> name }}</a> <br>
+                <span class="text-muted">&#8377; {{ $item -> price }}</span>
+              </p>
+    
+              <!--Footer -->
+              <div class="d-flex align-items-center">
+  
+    
+                <!-- Remove -->
+                <a class="fs-s text-gray-400\" href="/movetocart/{{ $item -> cart_id }}">
+                  <i class="fe f-s-22 fe-trash"></i> Remove
+                </a>
+    
+              </div>
+    
+            </div>
+          </div>
+        </li>
+        @endforeach
+
+      </ul>
+    
+      <!-- Footer -->
+      <div class="offcanvas-footer justify-between lh-fixed fs-sm bg-primaryy mt-auto">
+        <strong>Subtotal</strong> <strong class="ms-auto">$89.00</strong>
+      </div>
+    
+      <!-- Buttons -->
+      <div class="offcanvas-body">
+        <a class="btn w-100 btn-dark" href="checkout.html">Continue to Checkout</a>
+        <a class="btn w-100 btn-outline-dark mt-2" href="/cartlist">View Cart</a>
+      </div>
+
+          
+      @else
+
+      <div>
+        <div class="d-block">
+    
+          <!-- Close -->
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close">
+            
+          </button>
+      
+          <!-- Body -->
+          <div class="offcanvas-body flex-grow-0 my-auto">
+      
+            <!-- Heading -->
+            <h6 class="mb-7 text-center">Your cart is empty 😞</h6>
+      
+            <!-- Button -->
+            <a class="btn w-100 btn-outline-dark" href="/products">
               Continue Shopping
             </a>
       
@@ -513,15 +603,4 @@ if (Session::has('user')) {
      
     </div>
     
-    <style>
-      .logo-class{
-        width: 6.5rem;
-        height: 6.5rem;
-      }
-
-      .navbar{
-        background: linear-gradient(90deg, rgb(249 130 5) 0%, rgba(255,193,0,1) 48%, rgb(247 149 9) 100%);
-        padding-top: 0.2rem;
-        padding-bottom: 0.3rem;
-      }
-    </style>
+   

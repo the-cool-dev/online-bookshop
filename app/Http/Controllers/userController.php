@@ -19,13 +19,19 @@ class userController extends Controller
     function login(Request $req){
         $credentials = $req->only('email', 'password');
         $user = User::where(['email' => $req -> email]) -> first();
+        $user_role = $user['user_role'];
         $remember = $req->remember;
  
-        if (Auth::attempt($credentials, $remember)) {
+        if (Auth::attempt($credentials, $remember) && $user_role == 1) {
             // Authentication passed...
             $req -> session() -> put('user', $user);
-            return redirect('/');
-        }else{
+            return redirect('/admin');
+        }elseif(Auth::attempt($credentials, $remember) && $user_role == 0){
+                // Authentication passed...
+                $req -> session() -> put('user', $user);
+                return redirect('/');
+        }
+        else{
             return Redirect::back()->withErrors(['invalid' => 'Username or Password is Invalid']);
         }
     }
@@ -78,7 +84,7 @@ class userController extends Controller
         $user -> user_name = $req -> user_name;
         $user -> email = $req -> email;
         $user -> password = Hash::make($req -> password);
-        $user -> user_role = "admin";
+        $user -> user_role = 1;
         $user -> save();
 
         // $user = User::create([
@@ -88,6 +94,24 @@ class userController extends Controller
         return redirect('/login');
     }
 
+    function viewUsers(){
+        $user = User::all();
+        return view('admin/view_users', ['users' => $user]);
+    }
+
+    function updateUserStatus($id, $status){
+        if ($status == 1) {
+            User::where('id', $id) -> update(['status' => 0]);
+        }else{
+            User::where('id', $id) -> update(['status' => 1]);
+        }
+
+        return redirect('admin/view_users');
+    }
+
+
 }
+
+
 
 
